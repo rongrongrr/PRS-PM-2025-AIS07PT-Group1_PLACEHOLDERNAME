@@ -1,0 +1,5 @@
+# Always use Unix line endings for shell scripts, Dockerfiles, YAML, etc.
+*.sh          text eol=lf
+Dockerfile    text eol=lf
+*.yml         text eol=lf
+*.yaml        text eol=lf

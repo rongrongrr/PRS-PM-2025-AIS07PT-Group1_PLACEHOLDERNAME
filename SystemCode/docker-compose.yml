@@ -1,0 +1,13 @@
+services:
+  api:
+    build: ./backend
+    ports: ["8000:8000"]
+    volumes:
+      - ./backend:/app
+      - ./backend/static:/app/static
+    environment:
+      - PYTHONWARNINGS=ignore::UserWarning
+
+  web:
+    build: ./frontend_v2
+    ports: ["3000:3000"]
