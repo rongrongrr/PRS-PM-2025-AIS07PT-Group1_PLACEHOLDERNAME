@@ -187,7 +187,13 @@ const SkinConditionAnalyzer = () => {
 
               <button
                 onClick={triggerFileSelect}
-                className="bg-gray-200 text-gray-700 py-3 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:bg-gray-300 active:bg-gray-400 transition-colors touch-manipulation"
+                disabled={!selectedFile}
+                className={`bg-gray-200 text-gray-700 py-3 sm:py-3 px-4 sm:px-6 rounded-lg font-medium transition-colors touch-manipulation
+                  ${
+                    !selectedFile
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-gray-300 active:bg-gray-400"
+                  }`}
               >
                 Change Image
               </button>
