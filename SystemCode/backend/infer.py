@@ -19,7 +19,11 @@ FULL_NAMES = {
 def run_inference_and_annotate(image: Image.Image) -> bytes:
     results = model.predict(image, imgsz=640)[0]
     draw = ImageDraw.Draw(image)
-    font = ImageFont.load_default()
+    # Use a larger font size (e.g., 24)
+    try:
+        font = ImageFont.truetype("arial.ttf", 24)
+    except IOError:
+        font = ImageFont.load_default()
     detections = []
 
     for box in results.boxes:
@@ -28,7 +32,7 @@ def run_inference_and_annotate(image: Image.Image) -> bytes:
         conf = float(box.conf[0])
         abbr = model.names[cls_id]
         fullname = FULL_NAMES.get(abbr.lower(), abbr.lower())
-        label_text = f"Name: {fullname} ({abbr}), Confidence: {conf:.2f}"
+        label_text = f"Name: {abbr}, Confidence: {conf:.2f}"
         detections.append({
             "name": f"{fullname} ({abbr})",
             "confidence": conf
@@ -37,8 +41,9 @@ def run_inference_and_annotate(image: Image.Image) -> bytes:
         draw.rectangle([x1, y1, x2, y2], outline="red", width=2)
 
         # Simulate bold by drawing text multiple times
+        text_gap = 32
         for offset in [(0, 0), (1, 0), (0, 1), (1, 1)]:
-            draw.text((x1 + offset[0], y1 - 20 + offset[1]), label_text, fill="red", font=font)
+            draw.text((x1 + offset[0], y1 - text_gap + offset[1]), label_text, fill="red", font=font)
 
     # Convert back to JPEG for response
     buf = io.BytesIO()
